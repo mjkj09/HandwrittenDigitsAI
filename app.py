@@ -1,43 +1,20 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
 import torch
-import torch.nn as nn
-from torchvision import transforms
 from PIL import Image
-import numpy as np
+from streamlit_drawable_canvas import st_canvas
+from torchvision import transforms
+
+from CNN import CNN  # Import the same CNN definition used for training.
 
 CANVAS_SIZE = 280
-MODEL_PATH = "mnist_cnn_worst.pth"
-
-
-class CNN(nn.Module):
-    def __init__(self):
-        super(CNN, self).__init__()
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 32, 5, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-        )
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 64, 5, padding=2),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-        )
-        self.fc1 = nn.Linear(64 * 7 * 7, 256)
-        self.fc2 = nn.Linear(256, 10)
-
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = x.view(x.size(0), -1)
-        x = torch.relu(self.fc1(x))
-        return self.fc2(x)
+MODEL_PATH = "models/mnist_cnn_34ep_99.63acc_20250331_022317.pth"
 
 
 @st.cache_resource
 def load_model():
+    """
+    Load the trained PyTorch model from disk (CPU-only).
+    """
     model = CNN()
     model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
     model.eval()
@@ -45,21 +22,32 @@ def load_model():
 
 
 def process_image(image_data):
+    """
+    Convert the drawn RGBA image to grayscale 28x28 tensor,
+    then apply the same normalization used in training.
+    """
     if image_data is None:
         return None
 
+    # Convert to PIL Image
     img = Image.fromarray(image_data.astype("uint8"), "RGBA")
+
+    # Convert to grayscale and resize to 28x28 (MNIST size)
     img = img.convert("L").resize((28, 28))
 
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-    )
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
+
+    # Add batch dimension
     return transform(img).unsqueeze(0)
 
 
 def main():
     st.title("Real-Time Digit Recognition")
 
+    # Create a drawing canvas in Streamlit
     canvas = st_canvas(
         fill_color="rgba(0, 0, 0, 0)",
         stroke_width=18,
@@ -72,27 +60,34 @@ def main():
         key="canvas",
     )
 
+    # Load the model (cached by Streamlit)
     model = load_model()
 
+    # Process the image from the canvas
     if canvas.image_data is not None:
         input_tensor = process_image(canvas.image_data)
-        with torch.no_grad():
-            output = model(input_tensor)
-            probs = torch.softmax(output, dim=1)
-            pred = torch.argmax(probs).item()
 
-        col1, col2 = st.columns(2)
+        if input_tensor is not None:
+            with torch.no_grad():
+                output = model(input_tensor)
+                probs = torch.softmax(output, dim=1)
+                pred = torch.argmax(probs).item()
 
-        with col1:
-            st.subheader("Rysunek")
-            st.image(Image.fromarray(canvas.image_data[:, :, 3]), width=150)
+            # Display results
+            col1, col2 = st.columns(2)
 
-        with col2:
-            st.subheader("Predykcja")
-            st.metric(label="Cyfra", value=pred)
-            st.write("Prawdopodobieństwa:")
-            for i, p in enumerate(probs.squeeze().numpy()):
-                st.progress(float(p), text=f"{i}: {p*100:.1f}%")
+            with col1:
+                st.subheader("Drawing")
+                # Show only the alpha channel as a quick preview
+                st.image(Image.fromarray(canvas.image_data[:, :, 3]), width=150)
+
+            with col2:
+                st.subheader("Prediction")
+                st.metric(label="Digit", value=pred)
+                st.write("Probabilities:")
+                for i, p in enumerate(probs.squeeze().numpy()):
+                    # Show progress bar for each digit probability
+                    st.progress(float(p), text=f"{i}: {p * 100:.1f}%")
 
 
 if __name__ == "__main__":
