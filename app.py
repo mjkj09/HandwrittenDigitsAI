@@ -8,7 +8,7 @@ from CNN import CNN
 
 # Configuration constants
 CANVAS_SIZE = 280  # Size of the drawing canvas
-MODEL_PATH = "models/mnist_cnn_34ep_99.63acc_20250331_022317.pth"
+MODEL_PATH = "models/mnist_cnn_2ep_93.94acc_20250407_225823.pth"
 CLASSES = 10  # Number of digit classes (0-9)
 COLUMNS_PER_ROW = 5  # Number of probability bars per row
 
@@ -99,7 +99,9 @@ def main() -> None:
 
     # Load trained model
     model = load_model()
-    st.title("Rozpoznawanie cyfr - poprawnie wytrenowany model")
+    st.title(
+        "Rozpoznawanie cyfr - model na jednej warstwie konwolucyjnej o gorszych parametrach"
+    )
 
     # Create main layout columns
     col1, col2 = st.columns(2)
