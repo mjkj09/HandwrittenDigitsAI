@@ -17,19 +17,11 @@ class CNN(nn.Module):
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(2),
-            nn.Dropout(0.25)
+            nn.Dropout(0.25),
         )
 
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 64, 5, padding=2),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Dropout(0.25)
-        )
-
-        self.fc1 = nn.Linear(64 * 7 * 7, 256)
-        self.fc2 = nn.Linear(256, 10)
+        self.fc1 = nn.Linear(32 * 14 * 14, 64)
+        self.fc2 = nn.Linear(64, 10)
 
         self._initialize_weights()
 
@@ -53,7 +45,6 @@ class CNN(nn.Module):
         :return: logits for 10 classes (batch_size x 10).
         """
         x = self.conv1(x)
-        x = self.conv2(x)
         x = x.view(x.size(0), -1)  # Flatten
         x = F.relu(self.fc1(x))
         x = F.dropout(x, p=0.5, training=self.training)
