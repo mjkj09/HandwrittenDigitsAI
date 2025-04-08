@@ -33,6 +33,10 @@ def process_image(image_data: np.ndarray) -> torch.Tensor | None:
         return None
 
     try:
+        # Check if canvas is empty (all pixels are background)
+        if not np.any(image_data[:, :, :-1]):
+            return None
+
         # Convert numpy array to PIL Image and preprocess
         img = Image.fromarray(image_data.astype("uint8"), "RGBA")
         img = img.convert("L").resize((28, 28))
@@ -69,7 +73,7 @@ def display_header() -> None:
 def display_prediction(probs: torch.Tensor, pred: int) -> None:
     """Display prediction results with probability distribution."""
     st.subheader("Rozkład prawdopodobieństwa")
-    st.metric(label="cyfra", value=pred)
+    st.metric(label="Cyfra", value=pred)
 
     # Create 2 rows of 5 columns each
     rows = [st.columns(COLUMNS_PER_ROW) for _ in range(2)]
@@ -90,7 +94,7 @@ def display_prediction(probs: torch.Tensor, pred: int) -> None:
 
 def main() -> None:
     """Main application entry point."""
-    st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide", page_title="Undertrained")
     display_header()
 
     # Initialize session state
@@ -139,6 +143,11 @@ def main() -> None:
             with col2:
                 display_prediction(probs, pred)
 
+        else:
+            # Empty canvas - display zero probabilities
+            with col2:
+                zero_probs = torch.zeros((1, CLASSES))
+                display_prediction(zero_probs, pred="-")
 
 if __name__ == "__main__":
     main()
