@@ -7,7 +7,7 @@
 <p align="center"><img src="https://img.shields.io/github/contributors-anon/mjkj09/HandwrittenDigitsAI?style=for-the-badge" alt="shields"> <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&amp;logo=python&amp;logoColor=ffdd54" alt="shields"> <img src="https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&amp;logo=PyTorch&amp;logoColor=white" alt="shields"> <img src="https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&amp;logo=scikit-learn&amp;logoColor=white" alt="shields"> <img src="https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&amp;logo=streamlit&amp;logoColor=white" alt="shields"></p>
 
 
-<br><h2>Project Screenshots:</h2>
+<br><h2>📸 Project Screenshots</h2>
 
 <img src="https://snipboard.io/nhNzsE.jpg" alt="project-screenshot">
 
@@ -23,7 +23,7 @@ Here're some of the project's best features:
 *   Confusion matrix generation for performance analysis.
 *   Streamlit canvas for drawing digits and obtaining real-time predictions.
 
-<br><h2>🛠️ Installation Steps:</h2>
+<br><h2>🛠️ Installation Steps</h2>
 
 <p>1. Clone this repository or download it as a ZIP:</p>
 
@@ -45,9 +45,9 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-<br><h2>⚙️ Usage:</h2>
+<br><h2>⚙️ Usage</h2>
 
-<p><h3>Training the Model:</h3></p>
+<p><h3>Training the Model</h3></p>
 
 1. Confirm that a models/ folder exists (the script will create it if needed).
 
