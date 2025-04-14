@@ -47,7 +47,8 @@ pip install -r requirements.txt
 
 <br><h2>⚙️ Usage:</h2>
 
-<p>Training the Model:</p>
+<p><h3>Training the Model:</h3></p>
+
 1. Confirm that a models/ folder exists (the script will create it if needed).
 
 2. Run:
@@ -64,7 +65,7 @@ python train.py
 6. A confusion matrix is generated and saved to confusion_matrices/.
 
 
-<br><p>Running the Streamlit App</p>
+<br><p><h3>Running the Streamlit App</h3></p>
 1. Ensure that a trained model (e.g., mnist_cnn_xxx.pth) is present in the models/ folder.
 
 2. Launch the app:
@@ -82,10 +83,17 @@ streamlit run app.py
 <br><h2>📁 Repository Structure:</h2>
 
 HandwrittenDigitsAI/
-├── CNN.py               # Defines the CNN model class
-├── train.py             # Script to train/evaluate the model and save the best checkpoint
-├── app.py               # Streamlit application for real-time digit recognition
-├── models/              # Folder storing saved .pth model files
-├── confusion_matrices/  # Folder for generated confusion matrix images
-├── data/                # MNIST dataset is downloaded here
-└── README.md            # This README file
+
+├── CNN.py .................................. # Defines the CNN model class
+
+├── train.py ................................... # Script to train/evaluate the model and save the best checkpoint
+
+├── app.py .................................... # Streamlit application for real-time digit recognition
+
+├── models/ .................................  # Folder storing saved .pth model files
+
+├── confusion_matrices/ ......... # Folder for generated confusion matrix images
+
+├── data/ ....................................... # MNIST dataset is downloaded here
+
+└── README.md ........................ # This README file
