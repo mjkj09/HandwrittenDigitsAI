@@ -80,20 +80,20 @@ streamlit run app.py
 5. The app resizes and normalizes your drawing, then displays the predicted digit alongside a probability distribution.
 
 
-<br><h2>📁 Repository Structure:</h2>
+<br><h2>📁 Repository Structure</h2>
 
 HandwrittenDigitsAI/
 
-├── CNN.py .................................. # Defines the CNN model class
+├── CNN.py # Defines the CNN model class
 
-├── train.py ................................... # Script to train/evaluate the model and save the best checkpoint
+├── train.py # Script to train/evaluate the model and save the best checkpoint
 
-├── app.py .................................... # Streamlit application for real-time digit recognition
+├── app.py # Streamlit application for real-time digit recognition
 
-├── models/ .................................  # Folder storing saved .pth model files
+├── models/ # Folder storing saved .pth model files
 
-├── confusion_matrices/ ......... # Folder for generated confusion matrix images
+├── confusion_matrices/ # Folder for generated confusion matrix images
 
-├── data/ ....................................... # MNIST dataset is downloaded here
+├── data/ # MNIST dataset is downloaded here
 
-└── README.md ........................ # This README file
+└── README.md # This README file
